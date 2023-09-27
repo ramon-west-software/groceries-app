@@ -31,6 +31,8 @@ Initial Setup
                 cd client
             install dependencies
                 npm install
+            install axios for HTTP requests
+                npm install axios
         configure server proxy
             Add proxy property to package.json to allow the client application to make requests to the server API.
                 "proxy": "http://localhost:8080",
