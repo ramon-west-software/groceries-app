@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Root path - replace whith your location of the app
+ROOT_DIR="/Users/ramonwest/Projects/kitchen-stock"
+
 # Directory paths for the server and client apps
-SERVER_DIR="/Users/ramonwest/Projects/kitchen-stock/server"
-CLIENT_DIR="/Users/ramonwest/Projects/kitchen-stock/client"
+SERVER_DIR="$ROOT_DIR/server"
+CLIENT_DIR="$ROOT_DIR/client"
 
 # Function to start the server app
 start_server() {
@@ -28,6 +31,9 @@ open_client() {
 # Start the server app and React client app in parallel
 start_server
 start_client
+
+# Wait for client and server to start
+sleep 1
 open_client
 
 # Wait for both processes to finish (you can add more logic here as needed)

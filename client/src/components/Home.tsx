@@ -4,7 +4,6 @@ import axios from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
 
-const items: string[] = ["Refrigerator", "Freezer", "Pantry"];
 // mock data
 const fridgeData = [
   {
