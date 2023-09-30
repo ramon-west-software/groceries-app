@@ -1,8 +1,18 @@
 simple web app to manage kitchen inventory
+-- ADD STEPS AS NEEDED
 
-Initial Setup
+Requirements:
+    node v18.17.1
 
-    create server directory
+Initial setup - from repository pull
+
+    * make run script executable
+        navigate to .../kitchen-stock
+            enter command 'chmod +x ./run.sh'
+
+Initial Setup - from scratch
+    
+    * create server directory
         navigate to the root directory
             cd /kitchen-stock
         create forlder named 'server'
@@ -19,7 +29,7 @@ Initial Setup
             npm install cors
 
         
-    create client
+    * create client
         navigate back to the root directory  
             cd /kitchen-stock (cd ..)
         initialize vite project 
@@ -37,7 +47,7 @@ Initial Setup
             Add proxy property to package.json to allow the client application to make requests to the server API.
                 "proxy": "http://localhost:8080",
 
-    create run script
+    * create run script
         navigate back to root project directory
             cd /kitchen-stock
         create or drop-in the run.sh file
@@ -45,5 +55,5 @@ Initial Setup
             chmod +x ./run.sh
 
         
-To run the project (both server and client) navigate to the root project directory and run the run script
-    ./run.sh
+To run the project (both server and client) navigate to the root project directory (.../kitchen-stock) and run the run script
+    enter command './run.sh'
