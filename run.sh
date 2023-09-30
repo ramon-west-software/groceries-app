@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Root path - replace whith your location of the app
-ROOT_DIR="/Users/ramonwest/Projects/kitchen-stock"
+# Root path ".../kitchen-stock"
+ROOT_DIR=$(pwd)
 
 # Directory paths for the server and client apps
 SERVER_DIR="$ROOT_DIR/server"

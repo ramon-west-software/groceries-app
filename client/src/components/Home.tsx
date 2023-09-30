@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
-import { Item } from "./interfaces";
+import { FoodLocation } from "./Interfaces";
 
+const defaultFoodLocation: FoodLocation = {
+  name: "Default",
+  categories: [],
+};
 
 const Home: React.FC = () => {
   const [selectedView, setSelectedView] = useState("Log in"); // Default view
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [data, setData] = useState<Item[]>([]);
+  const [data, setData] = useState<FoodLocation[]>([]);
+  const [foodLocation, setFoodLocation] = useState<FoodLocation>(defaultFoodLocation);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -16,19 +21,24 @@ const Home: React.FC = () => {
 
   const handleViewSelect = (view: string) => {
     setSelectedView(view);
+    const foundItem = data.find((item) => item.name === view);
+    setFoodLocation(foundItem !== undefined ? foundItem : defaultFoodLocation);
   };
 
-  // Called when component is mounted
   useEffect(() => {
-    // Make a GET request to the server
-    axios
-      .get<Item[]>("http://localhost:8080/refrigerator-items") // todo: get all data in one call, not just fridge data
-      .then((response) => {
+    async function fetchData() {
+      try {
+        // Make a GET request to the server
+        const response = await axios.get<FoodLocation[]>(
+          "http://localhost:8080/items"
+        );
         setData(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+      }
+    }
+
+    fetchData();
   }, []);
 
   return (
@@ -41,46 +51,29 @@ const Home: React.FC = () => {
       </div>
       <div className="">
         <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
-          <div
-            className="sidebar-card"
-            onClick={() => handleViewSelect("Refrigerator")}
-          >
-            <div className="card-title"></div>
-            <div className="card-text">
-              <div className="fridge-icon"></div>
+          {data.map((location, index) => (
+            <div
+              key={index}
+              className="sidebar-card"
+              onClick={() => handleViewSelect(location.name)}
+            >
+              <div className="card-title"></div>
+              <div className="card-text">
+                <div className="fridge-icon"></div>
+              </div>
+              <div className="card-footer">
+                <h3>{location.name}</h3>
+              </div>
             </div>
-            <div className="card-footer">
-              <h3>Refrigerator</h3>
-            </div>
-          </div>
-          <div
-            className="sidebar-card"
-            onClick={() => handleViewSelect("Freezer")}
-          >
-            <div className="card-title"></div>
-            <div className="card-text">
-              <div className="freezer-icon"></div>
-            </div>
-            <div className="card-footer">
-              <h3>Freezer</h3>
-            </div>
-          </div>
-          <div
-            className="sidebar-card"
-            onClick={() => handleViewSelect("Pantry")}
-          >
-            <div className="card-title"></div>
-            <div className="card-text"></div>
-            <div className="card-footer">
-              <h3>Pantry</h3>
-            </div>
-          </div>
+          ))}
         </div>
         <div className={`main-content ${isSidebarOpen ? "show" : ""}`}>
-          {/* Render the content based on the selected view */}
-          {selectedView === "Refrigerator" && <Content data={data} />}
-          {selectedView === "Freezer" && <Content data={data} />}
-          {selectedView === "Pantry" && <Content data={data} />}
+          {/* Render the content based on the selected view  */}
+          {(
+            <Content
+              data={foodLocation !== undefined ? foodLocation.categories : defaultFoodLocation.categories}
+            />
+          )}
         </div>
       </div>
     </>

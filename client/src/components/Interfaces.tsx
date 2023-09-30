@@ -1,16 +1,19 @@
 export interface Item {
-    type: string;
     name: string;
     purchaseDate: string;
     daysLeft: number;
   }
 
-export interface ItemType {
-    type: string;
+export interface Category {
+    name: string;
     items: Item[];
 }
 
-export interface Section {
-    sectionName: string;
-    itemTypes: ItemType[];
+export interface FoodLocation {
+    name: string;
+    categories: Category[];
 }  
+
+export interface Locations {
+    locations: FoodLocation[];
+}

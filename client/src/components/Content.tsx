@@ -1,24 +1,22 @@
 import { FC } from "react";
-import { Item } from "./interfaces";
+import Items from "./Items";
+import { Category } from "./Interfaces";
+
 
 
 interface ContentProps {
-  data: Item[];
+  data: Category[];
 }
 
 const Content: FC<ContentProps> = ({ data }) => {
   return (
     <>
-      {data.map((item, index) => (
+      {data && Array.isArray(data) && data.map((category, index) => (
         <div className="main-card" key={index}>
-          <div className="main-card-title"> {item.type}</div>
+          <div className="main-card-title"> {category.name}</div>
           <div className="main-card-text">
-            <p>
-              {item.name} - Purchased {item.purchaseDate} - Good for{" "}
-              {item.daysLeft} more days
-            </p>
+            <Items data={category.items}></Items>
           </div>
-          <div className="card-footer">Updated {item.purchaseDate}</div>
         </div>
       ))}
     </>

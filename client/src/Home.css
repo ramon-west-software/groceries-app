@@ -228,9 +228,9 @@ header, h1 {
 .main-card-text {
   display:flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
   padding-left: 2%;
   width: 90%;
   height: 100%;
