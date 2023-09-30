@@ -1,94 +1,35 @@
-// App.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
+import { Item } from "./interfaces";
 
-// mock data
-const fridgeData = [
-  {
-    type: "Fruits",
-    name: "Banana",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Dairy",
-    name: "Milk",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Dairy",
-    name: "Yogurt",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-];
-const freezerData = [
-  {
-    type: "Meats",
-    name: "Ribs",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Dairy",
-    name: "Ice Cream",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Hexes",
-    name: "Crush hair & toenails",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-];
-const pantryData = [
-  {
-    type: "Grains",
-    name: "Bread",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Grains",
-    name: "Tortillas",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-  {
-    type: "Grains",
-    name: "Rice",
-    purchaseDate: "1/1/23",
-    daysLeft: 5,
-  },
-];
-// end mock data
 
 const Home: React.FC = () => {
   const [selectedView, setSelectedView] = useState("Log in"); // Default view
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [data, setData] = useState<Item[]>([]);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleViewSelect = (view: string) => {
-    try {
-      let respData = axios.get("http://localhost:8080/refrigerator-items");
-      console.log(`Response Data: ${respData}`);
-      console.log(respData);
-      // return respData;
-    } catch (error) {
-      console.error("Error retrieving refrigerator data:", error);
-    }
-
     setSelectedView(view);
   };
 
-  // Mock data for refrigerator section, get this from a GET request to server
+  // Called when component is mounted
+  useEffect(() => {
+    // Make a GET request to the server
+    axios
+      .get<Item[]>("http://localhost:8080/refrigerator-items") // todo: get all data in one call, not just fridge data
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -117,7 +58,9 @@ const Home: React.FC = () => {
             onClick={() => handleViewSelect("Freezer")}
           >
             <div className="card-title"></div>
-            <div className="card-text"><div className="freezer-icon"></div></div>
+            <div className="card-text">
+              <div className="freezer-icon"></div>
+            </div>
             <div className="card-footer">
               <h3>Freezer</h3>
             </div>
@@ -134,15 +77,10 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div className={`main-content ${isSidebarOpen ? "show" : ""}`}>
-          {/* <div className="container"> */}
           {/* Render the content based on the selected view */}
-          {selectedView === "Refrigerator" && (
-            // <p>Welcome to the Refrigerator Page</p>
-            <Content data={fridgeData} />
-          )}
-          {selectedView === "Freezer" && <Content data={freezerData} />}
-          {selectedView === "Pantry" && <Content data={pantryData} />}
-          {/* </div> */}
+          {selectedView === "Refrigerator" && <Content data={data} />}
+          {selectedView === "Freezer" && <Content data={data} />}
+          {selectedView === "Pantry" && <Content data={data} />}
         </div>
       </div>
     </>

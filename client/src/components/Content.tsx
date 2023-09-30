@@ -1,11 +1,6 @@
 import { FC } from "react";
+import { Item } from "./interfaces";
 
-interface Item {
-  type: string;
-  name: string;
-  purchaseDate: string;
-  daysLeft: number;
-}
 
 interface ContentProps {
   data: Item[];

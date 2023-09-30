@@ -95,7 +95,7 @@ app.get("/", (req, res) => {
 
 app.get("/refrigerator-items", (req, res) => {
   data = getFridgeData();
-  console.log(data);
+  console.log(`Response body: ` + data);
   res.json(data);
 });
 
