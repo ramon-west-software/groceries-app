@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Root path ".../kitchen-stock"
+# test push
 ROOT_DIR=$(pwd)
 
 # Directory paths for the server and client apps
