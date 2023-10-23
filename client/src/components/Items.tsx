@@ -9,16 +9,18 @@ interface ItemsProps {
 const Items: FC<ItemsProps> = ({ data }) => {
   return (
     <>
-      {data &&
-        Array.isArray(data) &&
-        data.map((item, index) => (
-          <ul>
-            <li key={index}>
-              {item.name} - Purchased {item.purchaseDate} - Good for{" "}
-              {item.daysLeft} more days
-            </li>
-          </ul>
-        ))}
+      <div className="main-card-text">
+        {data &&
+          Array.isArray(data) &&
+          data.map((item, index) => (
+            <ul>
+              <li key={index}>
+                {item.name} - Purchased {item.purchaseDate} - Good for{" "}
+                {item.daysLeft} more days
+              </li>
+            </ul>
+          ))}
+      </div>
     </>
   );
 };

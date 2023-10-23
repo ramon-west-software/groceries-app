@@ -1,43 +1,75 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
-import { FoodLocation } from "./Interfaces";
+import { StorageArea, UserData } from "./Interfaces";
 
-const defaultFoodLocation: FoodLocation = {
+// default empty intefaces
+const defaultData: UserData = {
+  userId: 0,
+  name: "Default",
+  storageAreas: [],
+};
+
+const defaultStorageArea: StorageArea = {
+  storageId: 0,
   name: "Default",
   categories: [],
 };
 
+// HTTP constants, todo: move to a property file
+const url = "http://192.168.0.135:8080/api/users/3";
+const username = "user";
+const password = "pass";
+const basicAuthHeader = "Basic " + btoa(username + ":" + password);
+
+
 const Home: React.FC = () => {
+  // Compinent state variables
+  const [data, setData] = useState<UserData>(defaultData);
+  const [selectedArea, setSelectedArea] =
+    useState<StorageArea>(defaultStorageArea);
   const [selectedView, setSelectedView] = useState("Log in"); // Default view
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [data, setData] = useState<FoodLocation[]>([]);
-  const [foodLocation, setFoodLocation] = useState<FoodLocation>(defaultFoodLocation);
 
+  // Functions to handle state changes
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleViewSelect = (view: string) => {
     setSelectedView(view);
-    const foundItem = data.find((item) => item.name === view);
-    setFoodLocation(foundItem !== undefined ? foundItem : defaultFoodLocation);
+    const foundStorageArea = data.storageAreas.find(
+      (storageArea) => storageArea.name === view
+    );
+    setSelectedArea(
+      foundStorageArea !== undefined ? foundStorageArea : defaultStorageArea
+    );
   };
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        // Make a GET request to the server
-        const response = await axios.get<FoodLocation[]>(
-          "http://localhost:8080/items"
-        );
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+      
+      const options = {
+        method: 'GET',
+        url: url,
+        headers: {Authorization: basicAuthHeader}
+      };
+      
+      axios.request(options).then(function (response) {
+        console.log('User ID: ' + response.data.userId);
+        console.log('User Name: ' + response.data.name);
+        console.log('Storage Areas: ' + response.data.storageAreas);
+        console.log('#Storage Areas: ' + response.data.storageAreas.length);
 
+        data.storageAreas.forEach((element) => {console.log(element.name)});
+
+        setData(response.data);
+
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
     fetchData();
   }, []);
 
@@ -51,29 +83,33 @@ const Home: React.FC = () => {
       </div>
       <div className="">
         <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
-          {data.map((location, index) => (
+          {data.storageAreas.map((storageArea, index) => (
             <div
               key={index}
               className="sidebar-card"
-              onClick={() => handleViewSelect(location.name)}
+              onClick={() => handleViewSelect(storageArea.name)}
             >
               <div className="card-title"></div>
               <div className="card-text">
                 <div className="fridge-icon"></div>
               </div>
               <div className="card-footer">
-                <h3>{location.name}</h3>
+                <h3>{storageArea.name}</h3>
               </div>
             </div>
           ))}
         </div>
         <div className={`main-content ${isSidebarOpen ? "show" : ""}`}>
           {/* Render the content based on the selected view  */}
-          {(
+          {
             <Content
-              data={foodLocation !== undefined ? foodLocation.categories : defaultFoodLocation.categories}
+              data={
+                selectedArea !== undefined
+                  ? selectedArea.categories
+                  : defaultStorageArea.categories
+              }
             />
-          )}
+          }
         </div>
       </div>
     </>

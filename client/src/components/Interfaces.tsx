@@ -1,19 +1,24 @@
 export interface Item {
+    itemId: number;
     name: string;
     purchaseDate: string;
-    daysLeft: number;
+    duration: number;
   }
 
 export interface Category {
+    categoryId: number;
     name: string;
     items: Item[];
 }
 
-export interface FoodLocation {
+export interface StorageArea {
+    storageId: number;
     name: string;
     categories: Category[];
 }  
 
-export interface Locations {
-    locations: FoodLocation[];
+export interface UserData {
+    userId: number;
+    name: string;
+    storageAreas: StorageArea[];
 }
