@@ -1,16 +1,59 @@
-simple web app to manage kitchen inventory
--- ADD STEPS AS NEEDED
+-- ADD STEPS AS NEEDED --
 
-Requirements:
-    node v18.17.1
+DESCRIPTION:
+    Web application to manage grocery inventory.
+    This project is intended to help developers learn and implement a tech stack of their choice
+        (also to help me stop buying duplicate bags of frozen veggies).
+
+PROJECT STRUCTURE:
+    Front-end
+        React
+            groceries-app/react-client
+        Angular 
+            groceries-app/react-angular
+    Mock Back-end
+         Node.js            - Mock data (no DB connection)
+            groceries-app/mock-backend
+    Back-end         
+        Node.js             - MySQL connection
+            in another repository, will merge here when API is more flushed out.
+        Java Spring Boot    - MySQL Connection
+            in another repository, will merge here when API is more flushed out.
+    Run scripts
+        React + Mock Node.js backend
+            groceries-app/run-mock-react.sh
+        -- ADD MORE AS NEW TECH STACKS ARE ADDED --
+    
+RUN:
+    I created a script to run both client/server programs in one terminal command.
+    To run the script, navigate to the root project directory (.../groceries-app) and run the appropriate shell script.
+    './run-react.sh'
+    -- ADD NEW SCRIPTS AS NEEDED --
+    './run-angular.sh'
+    './run-[client].sh'
+
+REQUIREMENTS:
+    Node v18.17.1
+        "cors": "^2.8.5",
+        "express": "^4.18.2"
+    React:
+        "axios": "^1.5.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    -- ADD NEW DEPENDENCIES AS NEEDED --
+    Angular:
+        v???
+
+
 
 Initial setup - from repository pull
 
-    * make run script executable
-        navigate to .../kitchen-stock
-            enter command 'chmod +x ./run.sh'
+    * Make the run script executable:
+        In terminal, navigate to .../groceries-app directory and enter command:
+            'chmod +x ./run-react.sh'
+            -- (May be different for windows) --
 
-Initial Setup - from scratch
+Initial Setup - from scratch (all these steps are unnecessary if you pull from git-repo)
     
     * create server directory
         navigate to the root directory
@@ -53,7 +96,3 @@ Initial Setup - from scratch
         create or drop-in the run.sh file
         add execution permission
             chmod +x ./run.sh
-
-        
-To run the project (both server and client) navigate to the root project directory (.../kitchen-stock) and run the run script
-    enter command './run.sh'
