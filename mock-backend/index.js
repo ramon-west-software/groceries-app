@@ -44,7 +44,7 @@ app.get("/items", (req, res) => {
   res.json(data);
 });
 
-app.get("/api/users/3", (req, res) => {
+app.get("/v1/api/users/3", (req, res) => {
   data = getUserItems();
   res.json(data);
 });
