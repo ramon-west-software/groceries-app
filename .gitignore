@@ -26,3 +26,7 @@ dist-ssr
 # Environment variables
 *.env
 groceries-api/.env
+
+# in case I add .env to git again :
+# git rm -rf --cached .
+# git add .
