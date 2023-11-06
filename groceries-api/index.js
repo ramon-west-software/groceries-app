@@ -1,10 +1,12 @@
 // import libraries
 import express from "express";
 import UserController from "./src/controller/UserController.js";
+import cors from "cors"
 
 // initialize app and dependencies
 const app = express();
 const userController = new UserController();
+app.use(cors());
 
 // API calls
 app.listen(8080, () => {

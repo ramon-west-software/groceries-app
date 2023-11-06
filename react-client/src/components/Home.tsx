@@ -18,7 +18,7 @@ const defaultStorageArea: StorageArea = {
 };
 
 // HTTP constants, todo: move to a property file
-const url = "http://192.168.0.135:8080/api/users/3";
+const url = "http://192.168.0.135:8080/v1/api/users/3";
 const username = "user";
 const password = "pass";
 const basicAuthHeader = "Basic " + btoa(username + ":" + password);
