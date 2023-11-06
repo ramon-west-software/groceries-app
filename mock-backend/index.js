@@ -54,75 +54,77 @@ app.listen(port, () => {
 });
 
 const allData = {
-	"userId": 3,
-	"name": "Rex",
-	"storageAreas": [
-		{
-			"storageId": 3,
-			"name": "Rex fridge",
-			"categories": [
-				{
-					"categoryId": 15,
-					"name": "Drinks",
-					"items": [
-						{
-							"itemId": 3,
-							"name": "Orange Juice",
-							"purchaseDate": "2023-10-09",
-							"duration": 14
-						},
-						{
-							"itemId": 4,
-							"name": "Apple Juice",
-							"purchaseDate": "2023-10-09",
-							"duration": 14
-						},
-						{
-							"itemId": 5,
-							"name": "Coconut Water",
-							"purchaseDate": "2023-10-09",
-							"duration": 14
-						}
-					]
-				},
-				{
-					"categoryId": 16,
-					"name": "Dairy",
-					"items": []
-				},
-				{
-					"categoryId": 17,
-					"name": "Produce",
-					"items": []
-				}
-			]
-		},
-		{
-			"storageId": 4,
-			"name": "Rex freezer",
-			"categories": [
-				{
-					"categoryId": 18,
-					"name": "Meats",
-					"items": []
-				}
-			]
-		},
-		{
-			"storageId": 5,
-			"name": "Rex pantry",
-			"categories": [
-				{
-					"categoryId": 19,
-					"name": "Snacks",
-					"items": []
-				},
-				{
-					"categoryId": 20,
-					"name": "Canned Foods",
-					"items": []
-				}
-			]
-		}
-	]
+	"userData": {
+		"name": "Rex",
+		"userId": 3,
+		"storageAreas": [
+			{
+				"storageId": 3,
+				"categories": [
+					{
+						"categoryId": 15,
+						"categoryName": "Drinks",
+						"groceryItems": [
+							{
+								"name": "Orange Juice",
+								"itemDuration": 14,
+								"purchaseDate": "2023-10-09",
+								"groceryItemId": 3
+							},
+							{
+								"name": "Apple Juice",
+								"itemDuration": 14,
+								"purchaseDate": "2023-10-09",
+								"groceryItemId": 4
+							},
+							{
+								"name": "Coconut Water",
+								"itemDuration": 14,
+								"purchaseDate": "2023-10-09",
+								"groceryItemId": 5
+							}
+						]
+					},
+					{
+						"categoryId": 16,
+						"categoryName": "Dairy",
+						"groceryItems": null
+					},
+					{
+						"categoryId": 17,
+						"categoryName": "Produce",
+						"groceryItems": null
+					}
+				],
+				"storageName": "Rex fridge"
+			},
+			{
+				"storageId": 4,
+				"categories": [
+					{
+						"categoryId": 18,
+						"categoryName": "Meats",
+						"groceryItems": null
+					}
+				],
+				"storageName": "Rex freezer"
+			},
+			{
+				"storageId": 5,
+				"categories": [
+					{
+						"categoryId": 19,
+						"categoryName": "Snacks",
+						"groceryItems": null
+					},
+					{
+						"categoryId": 20,
+						"categoryName": "Canned Foods",
+						"groceryItems": null
+					}
+				],
+				"storageName": "Rex pantry"
+			}
+		]
+	}
 };

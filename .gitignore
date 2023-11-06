@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Environment variables
-groceries-api/.env
+*.env

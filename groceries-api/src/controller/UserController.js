@@ -7,7 +7,7 @@ class UserController {
 
   async getUserData(id) {
     const user = await this.userService.getUserData(id);
-    return user;
+    return user[0];
   }
 
   async getAllUsers() {

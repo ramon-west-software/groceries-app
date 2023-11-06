@@ -6,7 +6,16 @@ import cors from "cors"
 // initialize app and dependencies
 const app = express();
 const userController = new UserController();
-app.use(cors());
+// app.use(cors());
+
+const allowedOrigins = ['http://localhost:5173'];
+
+const options = {
+  origin: allowedOrigins
+};
+
+// Then pass these options to cors:
+app.use(cors(options));
 
 // API calls
 app.listen(8080, () => {

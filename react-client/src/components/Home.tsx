@@ -10,7 +10,6 @@ const defaultData: UserData = {
   name: "Default",
   storageAreas: [],
 };
-
 const defaultStorageArea: StorageArea = {
   storageId: 0,
   name: "Default",
@@ -22,7 +21,6 @@ const url = "http://192.168.0.135:8080/v1/api/users/3";
 const username = "user";
 const password = "pass";
 const basicAuthHeader = "Basic " + btoa(username + ":" + password);
-
 
 const Home: React.FC = () => {
   // Compinent state variables
@@ -47,29 +45,30 @@ const Home: React.FC = () => {
     );
   };
 
+  // on load, useEffect is triggered
   useEffect(() => {
+    // define a function to make a GET request and set 'data'
     async function fetchData() {
-      
       const options = {
         method: 'GET',
         url: url,
-        headers: {Authorization: basicAuthHeader}
+        headers: { Authorization: basicAuthHeader },
       };
-      
-      axios.request(options).then(function (response) {
-        console.log('User ID: ' + response.data.userId);
-        console.log('User Name: ' + response.data.name);
-        console.log('Storage Areas: ' + response.data.storageAreas);
-        console.log('#Storage Areas: ' + response.data.storageAreas.length);
 
-        data.storageAreas.forEach((element) => {console.log(element.name)});
-
-        setData(response.data);
-
-      }).catch(function (error) {
-        console.error(error);
-      });
+      axios
+        .request(options)
+        .then(function (response) {
+          setData(response.data.userData);
+          console.log("Response Data: ");
+          console.log(response.data.userData);
+          console.log("Variable Data: ")
+          console.log(data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     }
+    // call function to make a GET request to load 'data'
     fetchData();
   }, []);
 
