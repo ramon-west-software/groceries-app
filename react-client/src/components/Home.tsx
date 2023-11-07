@@ -23,7 +23,7 @@ const password = "pass";
 const basicAuthHeader = "Basic " + btoa(username + ":" + password);
 
 const Home: React.FC = () => {
-  // Compinent state variables
+  // Component state variables
   const [data, setData] = useState<UserData>(defaultData);
   const [selectedArea, setSelectedArea] =
     useState<StorageArea>(defaultStorageArea);
@@ -35,11 +35,15 @@ const Home: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // when a storage area is selected, find it in the data object and call setSelectedArea useState()
   const handleViewSelect = (view: string) => {
     setSelectedView(view);
+
     const foundStorageArea = data.storageAreas.find(
       (storageArea) => storageArea.name === view
     );
+
+    // set userData.StorageArea[i] if found, otherwise set default Storage Area
     setSelectedArea(
       foundStorageArea !== undefined ? foundStorageArea : defaultStorageArea
     );
@@ -54,14 +58,17 @@ const Home: React.FC = () => {
         url: url,
         headers: { Authorization: basicAuthHeader },
       };
-
+      // extract respnse data and set using useState()
       axios
         .request(options)
         .then(function (response) {
-          setData(response.data.userData);
+          const userData = response.data.userData;
+          setData(userData);
           console.log("Response Data: ");
           console.log(response.data.userData);
           console.log("Variable Data: ")
+          console.log(userData);
+          console.log("Global Data: ")
           console.log(data);
         })
         .catch(function (error) {
@@ -82,7 +89,7 @@ const Home: React.FC = () => {
       </div>
       <div className="">
         <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
-          {data.storageAreas.map((storageArea, index) => (
+          {data && data.storageAreas.map((storageArea, index) => (
             <div
               key={index}
               className="sidebar-card"
