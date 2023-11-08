@@ -52,6 +52,10 @@ Initial setup - from repository pull
         In terminal, navigate to .../groceries-app directory and enter command:
             'chmod +x ./run-react.sh'
             -- (May be different for windows) --
+    * install dependencies if project does not start
+        I removed node-modules from git so that initial pull is smaller
+            navigate to /groceries-api in terminal  and enter this command to install nodemon for hot refresh:
+                'npm i nodemon'
 
 Initial Setup - from scratch (all these steps are unnecessary if you pull from git-repo)
     
