@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import axios, { AxiosResponse } from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
 import { StorageArea, UserData } from "./Interfaces";
 
 // default empty intefaces
 const defaultData: UserData = {
-  userId: 0,
+  id: 0,
   name: "Default",
   storageAreas: [],
 };
-
 const defaultStorageArea: StorageArea = {
-  storageId: 0,
+  id: 0,
   name: "Default",
   categories: [],
 };
@@ -23,9 +21,8 @@ const username = "user";
 const password = "pass";
 const basicAuthHeader = "Basic " + btoa(username + ":" + password);
 
-
 const Home: React.FC = () => {
-  // Compinent state variables
+  // Component state variables
   const [data, setData] = useState<UserData>(defaultData);
   const [selectedArea, setSelectedArea] =
     useState<StorageArea>(defaultStorageArea);
@@ -37,39 +34,34 @@ const Home: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // when a storage area is selected, find it in the data object and call setSelectedArea useState()
   const handleViewSelect = (view: string) => {
     setSelectedView(view);
+
     const foundStorageArea = data.storageAreas.find(
       (storageArea) => storageArea.name === view
     );
+
+    // set userData.StorageArea[i] if found, otherwise set default Storage Area
     setSelectedArea(
       foundStorageArea !== undefined ? foundStorageArea : defaultStorageArea
     );
   };
 
+  // useEffect is called each time component is rendered
+  // use it to fetch API data
   useEffect(() => {
-    async function fetchData() {
-      
-      const options = {
-        method: 'GET',
-        url: url,
-        headers: {Authorization: basicAuthHeader}
-      };
-      
-      axios.request(options).then(function (response) {
-        console.log('User ID: ' + response.data.userId);
-        console.log('User Name: ' + response.data.name);
-        console.log('Storage Areas: ' + response.data.storageAreas);
-        console.log('#Storage Areas: ' + response.data.storageAreas.length);
-
-        data.storageAreas.forEach((element) => {console.log(element.name)});
-
-        setData(response.data);
-
-      }).catch(function (error) {
-        console.error(error);
-      });
-    }
+    // async function to call API endpoint
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        // set data as component state
+        setData(json.userData);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -83,21 +75,22 @@ const Home: React.FC = () => {
       </div>
       <div className="">
         <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
-          {data.storageAreas.map((storageArea, index) => (
-            <div
-              key={index}
-              className="sidebar-card"
-              onClick={() => handleViewSelect(storageArea.name)}
-            >
-              <div className="card-title"></div>
-              <div className="card-text">
-                <div className="fridge-icon"></div>
+          {data &&
+            data.storageAreas.map((storageArea, index) => (
+              <div
+                key={index}
+                className="sidebar-card"
+                onClick={() => handleViewSelect(storageArea.name)}
+              >
+                <div className="card-title"></div>
+                <div className="card-text">
+                  <div className="fridge-icon"></div>
+                </div>
+                <div className="card-footer">
+                  <h3>{storageArea.name}</h3>
+                </div>
               </div>
-              <div className="card-footer">
-                <h3>{storageArea.name}</h3>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
         <div className={`main-content ${isSidebarOpen ? "show" : ""}`}>
           {/* Render the content based on the selected view  */}
