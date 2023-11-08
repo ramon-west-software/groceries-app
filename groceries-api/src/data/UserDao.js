@@ -47,22 +47,22 @@ class UserDao {
       const sqlQuery = `
       SELECT 
         JSON_OBJECT(
-            'userId', u.user_id,
+            'id', u.user_id,
             'name', u.user_name,
             'storageAreas', ( SELECT
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        'storageId', sa.storage_id,
-                        'storageName', sa.storage_name,
+                        'id', sa.storage_id,
+                        'name', sa.storage_name,
                         'categories', (
                             SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT(
-                                    'categoryId', c.category_id,
-                                    'categoryName', c.category_name,
+                                    'id', c.category_id,
+                                    'name', c.category_name,
                                     'groceryItems', (
                                         SELECT JSON_ARRAYAGG(
                                             JSON_OBJECT(
-                                                'groceryItemId', gi.grocery_item_id,
+                                                'id', gi.grocery_item_id,
                                                 'name', gi.name,
                                                 'itemDuration', gi.item_duration,
                                                 'purchaseDate', gi.purchase_date

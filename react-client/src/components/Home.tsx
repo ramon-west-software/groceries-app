@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import axios, { AxiosResponse } from "axios";
 import MenuToggle from "./MenuToggle";
 import Content from "./Content";
 import { StorageArea, UserData } from "./Interfaces";
 
 // default empty intefaces
 const defaultData: UserData = {
-  userId: 0,
+  id: 0,
   name: "Default",
   storageAreas: [],
 };
 const defaultStorageArea: StorageArea = {
-  storageId: 0,
+  id: 0,
   name: "Default",
   categories: [],
 };
@@ -49,33 +48,20 @@ const Home: React.FC = () => {
     );
   };
 
-  // on load, useEffect is triggered
+  // useEffect is called each time component is rendered
+  // use it to fetch API data
   useEffect(() => {
-    // define a function to make a GET request and set 'data'
-    async function fetchData() {
-      const options = {
-        method: 'GET',
-        url: url,
-        headers: { Authorization: basicAuthHeader },
-      };
-      // extract respnse data and set using useState()
-      axios
-        .request(options)
-        .then(function (response) {
-          const userData = response.data.userData;
-          setData(userData);
-          console.log("Response Data: ");
-          console.log(response.data.userData);
-          console.log("Variable Data: ")
-          console.log(userData);
-          console.log("Global Data: ")
-          console.log(data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }
-    // call function to make a GET request to load 'data'
+    // async function to call API endpoint
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        // set data as component state
+        setData(json.userData);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -89,21 +75,22 @@ const Home: React.FC = () => {
       </div>
       <div className="">
         <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
-          {data && data.storageAreas.map((storageArea, index) => (
-            <div
-              key={index}
-              className="sidebar-card"
-              onClick={() => handleViewSelect(storageArea.name)}
-            >
-              <div className="card-title"></div>
-              <div className="card-text">
-                <div className="fridge-icon"></div>
+          {data &&
+            data.storageAreas.map((storageArea, index) => (
+              <div
+                key={index}
+                className="sidebar-card"
+                onClick={() => handleViewSelect(storageArea.name)}
+              >
+                <div className="card-title"></div>
+                <div className="card-text">
+                  <div className="fridge-icon"></div>
+                </div>
+                <div className="card-footer">
+                  <h3>{storageArea.name}</h3>
+                </div>
               </div>
-              <div className="card-footer">
-                <h3>{storageArea.name}</h3>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
         <div className={`main-content ${isSidebarOpen ? "show" : ""}`}>
           {/* Render the content based on the selected view  */}
