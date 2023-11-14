@@ -1,22 +1,21 @@
-import React from "react";
 import { FC } from "react";
-import { Item } from "./Interfaces";
+import { GroceryItem } from "./Interfaces";
 
-interface ItemsProps {
-  data: Item[];
+interface GroceryItemsProps {
+  data: GroceryItem[];
 }
 
-const ItemsComponent: FC<ItemsProps> = ({ data }) => {
+const GroceryItemConponent: FC<GroceryItemsProps> = ({ data }) => {
   return (
     <>
       <div className="main-card-text">
         {data &&
           Array.isArray(data) &&
           data.map((item, index) => (
-            <ul>
+            <ul key={index}>
               <li key={index}>
                 {item.name} - Purchased {item.purchaseDate} - Good for{" "}
-                {item.duration} more days
+                {item.duration} days since purchase
               </li>
             </ul>
           ))}
@@ -25,4 +24,4 @@ const ItemsComponent: FC<ItemsProps> = ({ data }) => {
   );
 };
 
-export default ItemsComponent;
+export default GroceryItemConponent;

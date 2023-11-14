@@ -1,4 +1,4 @@
-export interface Item {
+export interface GroceryItem {
     id: number;
     name: string;
     purchaseDate: string;
@@ -8,7 +8,7 @@ export interface Item {
 export interface Category {
     id: number;
     name: string;
-    items: Item[];
+    groceryItems: GroceryItem[];
 }
 
 export interface StorageArea {
