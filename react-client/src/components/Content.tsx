@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Items from "./Items";
+import Items from "./ItemsComponent";
 import { Category } from "./Interfaces";
 
 

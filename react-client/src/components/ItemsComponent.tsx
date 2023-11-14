@@ -6,7 +6,7 @@ interface ItemsProps {
   data: Item[];
 }
 
-const Items: FC<ItemsProps> = ({ data }) => {
+const ItemsComponent: FC<ItemsProps> = ({ data }) => {
   return (
     <>
       <div className="main-card-text">
@@ -16,7 +16,7 @@ const Items: FC<ItemsProps> = ({ data }) => {
             <ul>
               <li key={index}>
                 {item.name} - Purchased {item.purchaseDate} - Good for{" "}
-                {item.daysLeft} more days
+                {item.duration} more days
               </li>
             </ul>
           ))}
@@ -25,4 +25,4 @@ const Items: FC<ItemsProps> = ({ data }) => {
   );
 };
 
-export default Items;
+export default ItemsComponent;

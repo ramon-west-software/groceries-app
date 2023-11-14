@@ -1,24 +1,24 @@
 export interface Item {
-    itemId: number;
+    id: number;
     name: string;
     purchaseDate: string;
     duration: number;
   }
 
 export interface Category {
-    categoryId: number;
+    id: number;
     name: string;
     items: Item[];
 }
 
 export interface StorageArea {
-    storageId: number;
+    id: number;
     name: string;
     categories: Category[];
 }  
 
 export interface UserData {
-    userId: number;
+    id: number;
     name: string;
     storageAreas: StorageArea[];
 }
