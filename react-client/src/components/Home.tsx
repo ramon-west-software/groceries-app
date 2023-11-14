@@ -57,7 +57,7 @@ const Home: React.FC = () => {
         const response = await fetch(url);
         const json = await response.json();
         // set data as component state
-        setData(json.userData);
+        setData(json[0].userData);
       } catch (error) {
         console.log("error", error);
       }
