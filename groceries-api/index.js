@@ -1,12 +1,17 @@
 // import libraries
 import express from "express";
 import UserController from "./src/controller/UserController.js";
-import cors from "cors"
+import cors from "cors";
+import jwt from "jsonwebtoken";
 
 // initialize app and dependencies
 const app = express();
 const userController = new UserController();
 app.use(cors());
+app.use(express.json());
+
+// initialize app constants
+const secretKey = process.env.SECRET_KEY;
 
 // API calls
 app.listen(8080, () => {
@@ -28,4 +33,49 @@ app.get("/v1/api/users/:id", async (req, res) => {
   res.json(user);
 });
 
-// app.post("/v1/api/users")
+// authenticate user, create session token
+app.post("/v1/api/login", async (req, res) => {
+  const { username, password } = await req.body;
+  
+  // validate user exists in database
+  if (username === "Rex" && password === "password") {
+    // generate token
+    const payload = {
+      username: username,
+      data: 'json object for user data',
+    }
+    const options = {
+      expiresIn: '1h',
+      algorithm: 'HS256',
+    }
+    const token = jwt.sign(payload, secretKey, options);
+    // return token
+    res.json({ token });
+  } else {
+    res.status(401).json({ message: "Invalid Credentials" });
+  }
+});
+
+// validate incoming JWT tokens for requests
+const validateToken = async (req, res, next) => {
+  // get token from request header
+  const token = await req.header('Authorization');
+  // if no token is present, return error
+  if (!token) {
+    return res.status(401).json({message: 'Missing token.'});
+  }
+  // if token is present, verify validity and decode
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({message: 'Invalid token.'});
+  }
+};
+
+// Protected route that requires a valid JWT token
+app.get('/protected', validateToken, (req, res) => {
+  res.json({ message: 'Access granted! Welcome to the protected route.' });
+});
