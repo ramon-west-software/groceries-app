@@ -22,10 +22,6 @@ app.get("/v1/api", (req, res) => {
   res.json("hello api");
 });
 
-app.get("/v1/api/users", (req, res) => {
-  let allUsers = userController.getAllUsers();
-  res.json(allUsers);
-});
 
 app.get("/v1/api/users/:id", async (req, res) => {
   let id = req.params.id;
@@ -38,10 +34,13 @@ app.post("/v1/api/login", async (req, res) => {
   const { username, password } = await req.body;
   
   // validate user exists in database
-  if (username === "Rex" && password === "password") {
+  let authUser = await userController.authenticateUser([username, password]);
+
+  if (authUser) {
     // generate token
     const payload = {
-      username: username,
+      userid: authUser.user_id,
+      username: authUser.user_name,
       data: 'json object for user data',
     }
     const options = {
@@ -67,7 +66,6 @@ const validateToken = async (req, res, next) => {
   // if token is present, verify validity and decode
   try {
     const decoded = jwt.verify(token, secretKey);
-    console.log(decoded);
     req.user = decoded;
     next();
   } catch (error) {
@@ -76,6 +74,8 @@ const validateToken = async (req, res, next) => {
 };
 
 // Protected route that requires a valid JWT token
-app.get('/protected', validateToken, (req, res) => {
-  res.json({ message: 'Access granted! Welcome to the protected route.' });
+app.get("/v2/api/users/:id", validateToken, async (req, res) => {
+  let id = req.params.id;
+  let user = await userController.getUserData(id);
+  res.json(user);
 });

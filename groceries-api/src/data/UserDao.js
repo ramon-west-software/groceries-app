@@ -55,8 +55,10 @@ class UserDao {
     return userData;
   }
 
-  async getAllUsers() {
-    return "all users";
+  async authenticateUser(login) {
+    const sql = `select user_id, user_name from groceries.users u where user_name = ? and password = ?;`
+    const [user] = await selectDataWithParms(sql, login);
+    return user;
   }
 }
 

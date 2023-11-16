@@ -14,6 +14,11 @@ class UserController {
     const users = await this.userService.getAllUsers();
     return users;
   }
+
+  async authenticateUser(login) {
+    const user = await this.userService.authenticateUser(login);
+    return user;
+  }
 }
 
 export default UserController;

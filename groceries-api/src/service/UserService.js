@@ -14,6 +14,11 @@ class UserService {
     const users = await this.userDao.getAllUsers();
     return users;
   }
+
+  async authenticateUser(login) {
+    const user = await this.userDao.authenticateUser(login);
+    return user;
+  }
 }
 
 export default UserService;
