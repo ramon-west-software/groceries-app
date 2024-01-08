@@ -16,13 +16,15 @@ const defaultStorageArea: StorageArea = {
 };
 
 // HTTP constants, todo: move to a property file
-const url = "http://192.168.0.135:8080/v1/api/users/3";
-const username = "user";
+const url = "http://192.168.0.135:8080/api/v1/users/3";
+const loginurl = "http://192.168.0.135:8080/api/v1/login";
+const username = "Rex";
 const password = "pass";
 const basicAuthHeader = "Basic " + btoa(username + ":" + password);
 
 const Home: React.FC = () => {
   // Component state variables
+  const [token, setToken] = useState('');
   const [data, setData] = useState<UserData>(defaultData);
   const [selectedArea, setSelectedArea] =
     useState<StorageArea>(defaultStorageArea);
@@ -48,22 +50,54 @@ const Home: React.FC = () => {
     );
   };
 
-  // useEffect is called each time component is rendered
-  // use it to fetch API data
+  // 1st useEffect, gets JWT token
+  // TODO: move into LOGIN component, 
   useEffect(() => {
-    // async function to call API endpoint
-    const fetchData = async () => {
+    const login = async () => {
+      const loginOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'User-Agent': 'insomnia/8.4.5' },
+        body: JSON.stringify({ username: 'Rex', password: 'password' })
+      };
+
       try {
-        const response = await fetch(url);
-        const json = await response.json();
-        // set data as component state
-        setData(json.userData);
+        const response = await fetch(loginurl, loginOptions);
+        const data = await response.json();
+        setToken(data.token); // Save the token to state
       } catch (error) {
-        console.log("error", error);
+        console.error(error);
       }
     };
-    fetchData();
-  }, []);
+
+    login(); // Trigger the login function when the component is mounted
+  }, []); // The empty dependency array ensures that this effect runs only once, equivalent to componentDidMount
+ 
+  // 2nd useEffect triggered when token is changed
+  useEffect(() => {
+    const handleRequest = async () => {
+      // Check if the token is available before making the request
+      if (token) {
+        const getRequestOptions = {
+          method: 'GET',
+          headers: {
+            // 'User-Agent': 'insomnia/8.4.5',
+            Authorization: `${token}` // Use the token obtained from login
+          }
+        };
+
+        try {
+          const response = await fetch(url, getRequestOptions);
+          const json = await response.json();
+          setData(json[0].userData);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    handleRequest(); // Trigger the handleRequest function when the component is mounted or when the token changes
+  }, [token]); // The effect depends on the token, so it will run when the token changes
+
 
   return (
     <>
